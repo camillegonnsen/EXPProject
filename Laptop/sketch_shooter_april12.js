@@ -13,7 +13,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight); // full screen
   clean();
   setupMQTT(topic); // start network library
-  background(255);
 }
 
 let userColors = {};
