@@ -28,7 +28,7 @@ function touchStarted() {
 
   sendMessage({
     "from": config.myID,
-    "alpha": alpha,
-    "beta": beta
+    "x": mouseX,
+    "y": mouseY
   });
 }
