@@ -7,6 +7,8 @@ let hoursRadius;
 let clockDiameter;
 let x;
 let y;
+let frameColor;
+let clockBackgroundColor;
 
 function setup() {
   createCanvas(720, 400);
@@ -21,6 +23,9 @@ function setup() {
   cx = width / 2;
   cy = height / 2;
   
+  frameColor = color(Math.random()*255,Math.random()*255,Math.random()*255);
+  clockBackgroundColor = color(Math.random()*255,Math.random()*255,Math.random()*255);
+  
   setupMQTT(topic); // start network library
 }
 
@@ -29,9 +34,10 @@ function draw() {
 
   // Draw the clock background
   noStroke();
-  fill(x, y, 158);
-  ellipse(cx, cy, clockDiameter + 25, clockDiameter + 25);
-  fill(y, x, 93);
+  
+  fill(frameColor);
+  ellipse(cx, cy, clockDiameter + 10, clockDiameter + 10);
+  fill(clockBackgroundColor);
   ellipse(cx, cy, clockDiameter, clockDiameter);
 
   // Angles for sin() and cos() start at 3 o'clock;
@@ -42,12 +48,15 @@ function draw() {
 
   // Draw the hands of the clock
   stroke(255);
+  //Seconds
   strokeWeight(1);
-  line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
+  line(cx, cy, 230, 170);
   strokeWeight(2);
-  line(cx, cy, cx + cos(m) * minutesRadius, cy + sin(m) * minutesRadius);
+  //Minutes
+  line(cx, cy, 280,280);
   strokeWeight(4);
-  line(cx, cy, cx + cos(h) * hoursRadius, cy + sin(h) * hoursRadius);
+  //Hour
+  line(cx, cy, 350,120);
 
   // Draw the minute ticks
   strokeWeight(2);
@@ -66,6 +75,9 @@ function onMessage(message) {
   // network message
   x = message["x"];
   y = message["y"];
+  frameColor = color(x, y, 158);
+  clockBackgroundColor = color(y, x, 93);
+  
   
 }
 
