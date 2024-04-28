@@ -16,11 +16,15 @@ let minuteHandx
 let minuteHandy;
 let alphaMinute = 10;
 
+// alarm audio
+let alarmSound;
+let lastPlayed = 0;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   stroke(255);
 
-  let radius = min(width, height) / 2;
+  let radius = min(width, height) / 3;
   dotRadius = radius * 0.71;
   minutesRadius = radius * 0.6;
   hoursRadius = radius * 0.5;
@@ -82,6 +86,19 @@ function draw() {
     vertex(x, y);
   }
   endShape();
+  
+  
+if (alphaMinute && (alphaHour < 10 || alphaHour > 350)) {
+    let currentTime = millis();
+    if (currentTime - lastPlayed > 3000) { // 11000 milliseconds = 11 seconds
+      alarmSound.play();
+      lastPlayed = currentTime;
+    }
+  } else {
+    alarmSound.stop();
+  }
+  
+  
 }
 
 
@@ -98,4 +115,12 @@ function onMessage(message) {
  
   console.log(alphaHour);
   console.log(alphaMinute);
+}
+
+
+function preload() {
+  // use mp3 format
+  soundFormats('mp3');
+  // load file without extension
+  alarmSound = loadSound('assets/clock-alarm');
 }
