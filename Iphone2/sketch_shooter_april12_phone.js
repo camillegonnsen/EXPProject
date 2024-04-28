@@ -1,5 +1,5 @@
 let topic = "group17";
-let threshold = 0; 
+let threshold = 10; 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -12,23 +12,21 @@ function onMessage(message) {
   // empty by design
 }
 
-let alpha = 0.0;
-let beta = 0.0;
 
 function draw() {
-  if(orientationSensor.hasNewValue) {
-    let gyro = orientationSensor.get();
-    alpha = gyro.alpha;
-    beta = gyro.beta;
-  }
+      if(orientationSensor.hasNewValue) {
+        let gyro = orientationSensor.get()
+        
+        let message = {
+            "from": config.myID,
+            "alphaHour": gyro.alpha,
+        };
+        
+        sendMessage(message);
+      }
 }
 
-function touchStarted() {
-  setupOrientation(threshold);
 
-  sendMessage({
-    "from": config.myID,
-    "x": mouseX,
-    "y": mouseY
-  });
+function touchStarted(){
+  setupOrientation(threshold);
 }

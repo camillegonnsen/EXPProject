@@ -10,12 +10,14 @@ let clockBackgroundColor;
 
 let hourHandx;
 let hourHandy;
-let alphaHour;
+let alphaHour = 0;
 
-let alphaMinute;
+let minuteHandx
+let minuteHandy;
+let alphaMinute = 10;
 
 function setup() {
-  createCanvas(720, 400);
+  createCanvas(windowWidth, windowHeight);
   stroke(255);
 
   let radius = min(width, height) / 2;
@@ -55,11 +57,18 @@ function draw() {
   hourHandy = cy + sin(h) * hoursRadius;
 
 
+  // Map alphaMinute to a value between 0 and TWO_PI, then subtract HALF_PI to make it start at the top
+  let m = map(alphaMinute, 360, 0, 0, TWO_PI) - HALF_PI;
+
+  // Calculate the x and y coordinates for the minute hand based on the alphaMinute value
+  minuteHandx = cx + cos(m) * minutesRadius;
+  minuteHandy = cy + sin(m) * minutesRadius;
+
   // Draw the hands of the clock
   stroke(255);
  
   strokeWeight(2);
-  line(cx, cy, 280,280);
+  line(cx, cy, minuteHandx, minuteHandy); // Use the calculated x and y coordinates for the minute hand
   strokeWeight(4);
   line(cx, cy, hourHandx, hourHandy); // Use the calculated x and y coordinates for the hour hand
 
@@ -79,8 +88,14 @@ function draw() {
 
 function onMessage(message) {
   // network message
-  alphaHour = message["alphaHour"]
-  alphaMinute = message["alphaMinute"];
+  if (message["alphaHour"] != undefined){
+     alphaHour = message["alphaHour"]   
+  }
+  
+  if (message["alphaMinute"] != undefined){
+     alphaMinute = message["alphaMinute"];  
+  }
+ 
   console.log(alphaHour);
   console.log(alphaMinute);
 }
